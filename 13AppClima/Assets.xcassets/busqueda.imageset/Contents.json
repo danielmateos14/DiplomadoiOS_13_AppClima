@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "f9bb81e576c1a361c61a8c08945b2c48-icono-de-busqueda.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
