@@ -34,14 +34,20 @@ class ViewController: UIViewController {
 //    LLamada a funcion que recibe la ciudad
         climaManager.delegate = self
 //        labelCiudad.text = "holaaaaaa"
-        climaManager.recibeNombreCiudad(cualCiudad: "&q=ciudad+de+mexico")
     }
     
 //Boton buscar mandar llamar a la funcion que recibe ese texto
-//    @IBAction func btnBuscar(_ sender: UIButton) {
-//        tfBuscar.text
-//        
-//    }
+    @IBAction func btnBuscar(_ sender: UIButton) {
+        if tfBuscar.text == ""{
+            
+        }
+        else{
+        let ciudadString = tfBuscar.text?.replacingOccurrences(of: " ", with: "+")
+//        Dubug
+//        print(ciudadString)
+        climaManager.recibeNombreCiudad(cualCiudad: ciudadString ?? "0")
+        }
+    }
     
 }
 

@@ -19,7 +19,7 @@ struct ClimaManager{
         
 //  Funcion que recibe nombre ciudad
     func recibeNombreCiudad(cualCiudad: String){
-        let urlString = "http://api.openweathermap.org/data/2.5/weather?&APPID=7e19186558ea9fae06d5445efed291e3&units=metric&lang=es\(cualCiudad)"
+        let urlString = "http://api.openweathermap.org/data/2.5/weather?&APPID=7e19186558ea9fae06d5445efed291e3&units=metric&lang=es&q=\(cualCiudad)"
         funcionUrlSessions(recibeString: urlString)
     }
 
