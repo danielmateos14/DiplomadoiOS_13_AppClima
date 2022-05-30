@@ -36,6 +36,9 @@ class ViewController: UIViewController {
 //        protocolo de location
         locationManager.delegate = self
         
+//        Protocolo text edit
+        tfBuscar.delegate = self
+        
 //        Solicitamos permisos al usuario
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
@@ -43,24 +46,31 @@ class ViewController: UIViewController {
 //    LLamada a funcion que recibe la ciudad
         climaManager.delegate = self
         
+        
     }// viewDID
     
 //    MARK: ************************* Actions ****************************************
 //Boton buscar mandar llamar a la funcion que recibe ese texto
     @IBAction func btnBuscar(_ sender: UIButton) {
-////        Si el text edit esta vacio entonces no hace nada
-//        if ((tfBuscar.text?.isEmpty) == nil){
-//            print("Debug **** tf vacio")
-//        }
-//        else{
-//            let ciudadString = tfBuscar.text?.replacingOccurrences(of: " ", with: "+")
-//            //        Dubug
-//            //        print(ciudadString)
-//            climaManager.recibeNombreCiudad(cualCiudad: ciudadString ?? "0")
-//        }
+//        Variable con una funcion que reemplaza un texto por otro, en este caso
+//        reemplaza los espacios vacios por un signo +
+        let ciudadString = tfBuscar.text?.replacingOccurrences(of: " ", with: "+")
+//          Variable que usa la anterior para quitarle los acentos
+        let sinAcentos = ciudadString?.applyingTransform(.stripDiacritics, reverse: false)
+        print("Debug ***** \(ciudadString ?? "")")
+//              Al presionar el boton llama a la funcion que recibe la ciudad
+        climaManager.recibeNombreCiudad(cualCiudad: sinAcentos?.lowercased() ?? "")
     }
     @IBAction func btnLocation(_ sender: UIButton) {
+//        Al principio cuando pide los permisos, si no se ponen rapido marca un error
+//        y no va a la ubicacion hasta que presionas el boton, con esto forzamos a
+//        vaya a la ubicacion
         locationManager.requestLocation()
+    }
+    
+//    MARK: ***************** Cerrar teclado en cualquier lugar ************************
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
     
 } //View Controller
@@ -136,9 +146,42 @@ extension ViewController: CLLocationManagerDelegate{
 //    Si hay un error al obtener la ubicacion imprime en consola
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error al obtener la ubicacion \(error.localizedDescription)")
-        
-        
+        locationManager.requestLocation()
     }
     
 }
 
+//    MARK: ************************* text field ************************************
+extension ViewController: UITextFieldDelegate{
+//    La primera funcion del protocolo tex field es para cerrar el teclado cuando
+//    presionamos la tecla enter
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        tfBuscar.endEditing(true)
+    }
+    
+//    Este metodo, lo que hace es identificar si ya terminamos de escribir y hace lo
+//    que le inidcamos en este caso hacer la busqueda de la ciudad como cuando
+//    presionas la lupa
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        //        Variable con una funcion que reemplaza un texto por otro, en este caso
+        //        reemplaza los espacios vacios por un signo +
+        let ciudadString = tfBuscar.text?.replacingOccurrences(of: " ", with: "+")
+        //          Variable que usa la anterior para quitarle los acentos
+        let sinAcentos = ciudadString?.applyingTransform(.stripDiacritics, reverse: false)
+        print("Debug ***** \(ciudadString ?? "")")
+        //              Al presionar el boton llama a la funcion que recibe la ciudad
+        climaManager.recibeNombreCiudad(cualCiudad: sinAcentos?.lowercased() ?? "")
+    }
+    
+//    Esta tercera funcion lo que hace es verificar si se escribio algo en el textfield
+//    si no entonces pone un placeholder en la caja de texto y si si, hace lo arriba
+//    de la funcion cuando terminas de editar
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if tfBuscar.text != ""{
+            return true
+        }else{
+            self.tfBuscar.placeholder = "Que localidad ?????"
+            return true
+        }
+    }
+}
