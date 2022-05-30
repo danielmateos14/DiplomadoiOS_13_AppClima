@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UIKit
+import CoreLocation
 
 protocol ClimaProtocol{
     func actualizarUI(recibeClima: ClimaModelo)
@@ -17,12 +19,20 @@ struct ClimaManager{
     
     var delegate: ClimaProtocol?
         
-//  Funcion que recibe nombre ciudad
+//  Funcion que recibe nombre ciudad o ubicacion
+    
     func recibeNombreCiudad(cualCiudad: String){
         let urlString = "http://api.openweathermap.org/data/2.5/weather?&APPID=7e19186558ea9fae06d5445efed291e3&units=metric&lang=es&q=\(cualCiudad)"
         funcionUrlSessions(recibeString: urlString)
+} //Cierra recibe ubicacion
+    
+//    Funcion que recibe localizacion
+    func recibeLocalizacion(longitud: CLLocationDegrees, latitud: CLLocationDegrees){
+        let urlString = "http://api.openweathermap.org/data/2.5/weather?&APPID=7e19186558ea9fae06d5445efed291e3&units=metric&lang=es&lat=\(latitud)&lon=\(longitud)"
+        
+        funcionUrlSessions(recibeString: urlString)
     }
-
+    
     
 //    Funcion para urlSessions
     func funcionUrlSessions(recibeString: String){
@@ -94,7 +104,9 @@ struct ClimaManager{
             return nil
         }
         
-    }
+    }//Cierra decodificar json
     
-}
+    
+    
+} //cierra clima manager
 

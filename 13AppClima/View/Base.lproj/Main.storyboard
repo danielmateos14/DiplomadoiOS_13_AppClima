@@ -37,6 +37,9 @@
                                 <state key="normal" title="Button" image="localizacion">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration"/>
                                 </state>
+                                <connections>
+                                    <action selector="btnLocation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Omd-OT-qow"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lwp-7a-ZZx">
                                 <rect key="frame" x="265" y="65" width="40" height="40"/>

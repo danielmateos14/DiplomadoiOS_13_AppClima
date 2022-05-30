@@ -6,11 +6,15 @@
 //
 
 import UIKit
+import CoreLocation
 
 class ViewController: UIViewController {
     
 //    Instancia de Clima manager
     var climaManager = ClimaManager()
+    
+//    Instancia del location
+    let locationManager = CLLocationManager()
 
 //    Variables graficas
     @IBOutlet weak var labelTemp: UILabel!
@@ -31,9 +35,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        protocolo de location
+        locationManager.delegate = self
+        
+//        Solicitamos permisos al usuario
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
+        
 //    LLamada a funcion que recibe la ciudad
         climaManager.delegate = self
-//        labelCiudad.text = "holaaaaaa"
+//
     }
     
 //Boton buscar mandar llamar a la funcion que recibe ese texto
@@ -48,15 +59,11 @@ class ViewController: UIViewController {
         climaManager.recibeNombreCiudad(cualCiudad: ciudadString ?? "0")
         }
     }
+    @IBAction func btnLocation(_ sender: UIButton) {
+        locationManager.requestLocation()
+    }
     
-}
-
-
-
-//Localizacion del usuario, si acepta los permisos la localizacion sera la ubicacion predeterminada, guarda las coordenadas en una variable y si si entonces pones esa localizacion y si no entonces pones la ultima a la que entro, a la que entro la va a guardar en los esos services no se q
-
-//Si se acepta entonces pones la de la localizacion y si no entonces mandas el foco al textedit
-
+} //View Controller
 
 
 //Extension del protocolo
@@ -93,7 +100,28 @@ extension ViewController: ClimaProtocol {
             }
         }
     }
+} // Protocolo
+
+//Extesion del core location
+
+extension ViewController: CLLocationManagerDelegate{
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let ubicacion = locations.first{
+            locationManager.stopUpdatingLocation()
+            let latitud = ubicacion.coordinate.latitude
+            let longitud = ubicacion.coordinate.longitude
+            
+            print("Latitud ***** \(latitud)")
+            print("Longitud ***** \(longitud)")
+            climaManager.recibeLocalizacion(longitud: longitud, latitud: latitud)
+    }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error al obtener la ubicacion \(error.localizedDescription)")
+        
+    }
     
 }
 
