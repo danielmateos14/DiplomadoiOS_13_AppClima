@@ -8,6 +8,7 @@
 import Foundation
 
 // Modelamos los datos para poder crear el objeto con los datos decodificados
+// Con un nombre personalizado cada dato del json
 
 struct ClimaModelo{
     let modeloName: String
@@ -18,7 +19,10 @@ struct ClimaModelo{
     let modeloMin: Double
     let modeloMax: Double
     
-//    Propiedad computada
+//    Propiedad computada, esta sirve para que en base a un rango dentro de una vriable
+//    tome el valor de ese rango, por ejemplo aqui, el icono cambia dependiendo
+//    de un rango de numeros entonces la variable va a tomar ese valor dependiendo
+//    de ese rango como un if o como switch
     var iconoClima: String{
         switch modeloId{
         case 200...232:
@@ -48,6 +52,7 @@ struct ClimaModelo{
         }
     }
     
+//    Propiedad computada para cambiar el fondo dependiendo del rango
     var wallpaperClima: String{
         switch modeloId{
         case 200...232:

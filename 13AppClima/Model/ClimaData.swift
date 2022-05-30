@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Struct de clima tal cual viene en el json
 struct ClimaData: Codable{
     let weather: [Weather]
     let main: Main
@@ -16,7 +17,6 @@ struct ClimaData: Codable{
 
 struct Weather: Codable{
     let id: Int?
-//    let main: String?
     let description: String?
     let icon: String?
 }
